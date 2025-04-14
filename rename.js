@@ -1,5 +1,5 @@
-module.exports = function ({ proxies }) {
-  const airportPrefix = "晏"; 
+;(({ proxies }) => {
+  const airportPrefix = "晏";
   const keepKeywords = ["GPT", "NF", "IPLC", "家宽", "Game"];
   const flagMap = {
     香港: "🇭🇰", 台湾: "🇨🇳", 日本: "🇯🇵", 韩国: "🇰🇷", 新加坡: "🇸🇬",
@@ -36,7 +36,6 @@ module.exports = function ({ proxies }) {
     return keepKeywords.filter(k => name.includes(k)).join("+") || "";
   }
 
-  // 命名、过滤、附加标识
   let processed = proxies.map((p, i) => {
     try {
       const rawName = safeName(p.name, i);
@@ -45,14 +44,7 @@ module.exports = function ({ proxies }) {
       const flag = flagMap[region] || "🏳️";
       const multiplier = extractMultiplier(rawName);
       const tag = extractTag(rawName);
-      const parts = [
-        airportPrefix,
-        flag,
-        region,
-        port,
-        tag,
-        multiplier
-      ].filter(Boolean);
+      const parts = [airportPrefix, flag, region, port, tag, multiplier].filter(Boolean);
       p.name = parts.join(" - ");
       return p;
     } catch {
@@ -61,11 +53,9 @@ module.exports = function ({ proxies }) {
     }
   });
 
-  // 过滤倍率=1 或不含倍率节点
   processed = processed.filter(p => /(\d+(\.\d+)?)(x|倍|ˣ²|ˣ³|ˣ⁴|ˣ⁵|ˣ⁶)/i.test(p.name));
 
-  // 分组排序：高倍率节点在前
   const highMult = processed.filter(p => /2x|3x|4x|倍|ˣ²|ˣ³/.test(p.name));
   const normal = processed.filter(p => !highMult.includes(p));
   return [...highMult, ...normal];
-};
+})(arguments[0]);
