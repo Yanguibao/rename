@@ -1,4 +1,5 @@
-((proxies) => {
+((proxiesRaw) => {
+  const proxies = Array.isArray(proxiesRaw) ? proxiesRaw : [];
   const airportPrefix = "晏";
   const keepKeywords = ["GPT", "NF", "IPLC", "家宽", "Game"];
   const flagMap = {
@@ -54,7 +55,6 @@
   });
 
   processed = processed.filter(p => /(\d+(\.\d+)?)(x|倍|ˣ²|ˣ³|ˣ⁴|ˣ⁵|ˣ⁶)/i.test(p.name));
-
   const highMult = processed.filter(p => /2x|3x|4x|倍|ˣ²|ˣ³/.test(p.name));
   const normal = processed.filter(p => !highMult.includes(p));
   return [...highMult, ...normal];
