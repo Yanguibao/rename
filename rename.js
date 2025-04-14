@@ -1,6 +1,5 @@
 ((proxiesRaw) => {
   const proxies = Array.isArray(proxiesRaw) ? proxiesRaw : [];
-  const airportPrefix = "Y";
   const keepKeywords = ["GPT", "NF", "IPLC", "家宽", "Game"];
   const flagMap = {
     香港: "🇭🇰", 台湾: "🇨🇳", 日本: "🇯🇵", 韩国: "🇰🇷", 新加坡: "🇸🇬",
@@ -41,10 +40,11 @@
     try {
       const rawName = safeName(p.name, i);
       const region = extractRegion(rawName);
+      const flag = flagMap[region] || "🏳️";
       const multiplier = extractMultiplier(rawName);
       const tag = extractTag(rawName);
-      const parts = [airportPrefix, flagMap[region] || "🏳️", region, tag, multiplier].filter(Boolean);
-      p.name = parts.join(" - ");
+      const parts = [region, flag, tag, multiplier].filter(Boolean);
+      p.name = parts.join(" | ");
       return p;
     } catch {
       p.name = `Node-${i}`;
