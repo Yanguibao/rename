@@ -1,4 +1,4 @@
-;(({ proxies }) => {
+((proxies) => {
   const airportPrefix = "晏";
   const keepKeywords = ["GPT", "NF", "IPLC", "家宽", "Game"];
   const flagMap = {
